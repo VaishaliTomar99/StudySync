@@ -1,0 +1,34 @@
+body{
+    background: linear-gradient(to right, #141e30, #243b55);
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.card{
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: none;
+}
+
+.form-control{
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: none;
+}
+
+.form-control:focus{
+    box-shadow: none;
+    border: 1px solid cyan;
+}
+
+.btn-custom{
+    background: cyan;
+    border: none;
+    color: black;
+    font-weight: bold;
+}
+
+.navbar{
+    background: rgba(0,0,0,0.3);
+}
