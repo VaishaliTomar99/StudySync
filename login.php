@@ -22,6 +22,9 @@ if(isset($_POST['login'])){
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
+            $_SESSION['avatar'] = !empty($user['avatar'])
+                ? $user['avatar']
+                : 'uploads/avatars/default.png';
 
             header("Location: dashboard.php");
 
