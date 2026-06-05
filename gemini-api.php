@@ -64,7 +64,7 @@ $message = trim($_POST['message']);
 // USER ID
 
 
-$user_id = 1;
+
 
 $user_id = $_SESSION['user_id'];
 
