@@ -17,7 +17,7 @@ if(!isset($_SESSION['user_id'])){
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>AI Study Assistant</title>
+<title>AI Assistant</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 rel="stylesheet">
@@ -302,7 +302,7 @@ body{
 
     <div class="chat-header">
 
-        <h2>AI Study Assistant ✨</h2>
+        <h2>AI Assistant ✨</h2>
 
         <button
         class="delete-btn"
