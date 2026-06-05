@@ -2,16 +2,13 @@
 
 session_start();
 
+include 'includes/db.php';
+
 header("Content-Type: application/json");
 
 
 // DATABASE CONNECTION
-$conn = mysqli_connect(
-    "localhost",
-    "root",
-    "",
-    "studyplanner_db"
-);
+
 
 
 // CHECK CONNECTION

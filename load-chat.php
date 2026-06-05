@@ -2,12 +2,7 @@
 
 session_start();
 
-$conn = new mysqli(
-    "localhost",
-    "root",
-    "",
-    "studyplanner_db"
-);
+include 'includes/db.php';
 
 $user_id = $_SESSION['user_id'];
 

@@ -54,8 +54,7 @@ if(isset($_POST['update'])){
 
             // ABSOLUTE PATH
             $uploadDir =
-            $_SERVER['DOCUMENT_ROOT'] .
-            "/studyplanner/uploads/avatars/";
+            __DIR__ . "/uploads/avatars/";
 
             // CREATE FOLDER IF NOT EXISTS
             if(!is_dir($uploadDir)){
