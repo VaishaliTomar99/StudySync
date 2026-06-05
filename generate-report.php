@@ -6,47 +6,86 @@ include 'includes/db.php';
 
 require('fpdf/fpdf.php');
 
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php");
+    exit();
+}
+
 $user_id = $_SESSION['user_id'];
 
-$tasks =
-mysqli_query($conn,
+$query = mysqli_query($conn,
 "SELECT * FROM tasks
- WHERE user_id='$user_id'");
+ WHERE user_id='$user_id'
+ ORDER BY deadline ASC");
 
 $pdf = new FPDF();
 
 $pdf->AddPage();
 
-$pdf->SetFont('Arial','B',18);
+$pdf->SetFont('Arial','B',20);
 
-$pdf->Cell(190,10,
-'StudySync AI Task Report',
-0,1,'C');
+$pdf->SetTextColor(106,90,249);
+
+$pdf->Cell(190,15,'StudySync AI - Task Report',0,1,'C');
 
 $pdf->Ln(10);
 
-$pdf->SetFont('Arial','B',12);
+$pdf->SetFont('Arial','B',11);
 
-$pdf->Cell(40,10,'Subject',1);
-$pdf->Cell(70,10,'Task',1);
-$pdf->Cell(40,10,'Priority',1);
-$pdf->Cell(40,10,'Status',1);
+$pdf->SetFillColor(106,90,249);
 
-$pdf->Ln();
+$pdf->SetTextColor(255,255,255);
 
-$pdf->SetFont('Arial','',11);
+$pdf->Cell(35,12,'Subject',1,0,'C',true);
 
-while($row=mysqli_fetch_assoc($tasks)){
+$pdf->Cell(65,12,'Task Title',1,0,'C',true);
 
-$pdf->Cell(40,10,$row['subject'],1);
-$pdf->Cell(70,10,$row['task_title'],1);
-$pdf->Cell(40,10,$row['priority'],1);
-$pdf->Cell(40,10,$row['status'],1);
+$pdf->Cell(30,12,'Deadline',1,0,'C',true);
 
-$pdf->Ln();
+$pdf->Cell(25,12,'Priority',1,0,'C',true);
 
+$pdf->Cell(35,12,'Status',1,1,'C',true);
+
+$pdf->SetTextColor(0,0,0);
+
+$pdf->SetFont('Arial','',10);
+
+while($row = mysqli_fetch_assoc($query)){
+
+    $subject = $row['subject'];
+
+    $task = substr($row['task_title'],0,32);
+
+    $deadline = date('d M Y',
+        strtotime($row['deadline']));
+
+    $priority = $row['priority'];
+
+    $status = $row['status'];
+
+    $pdf->Cell(35,12,$subject,1);
+
+    $pdf->Cell(65,12,$task,1);
+
+    $pdf->Cell(30,12,$deadline,1);
+
+    $pdf->Cell(25,12,$priority,1);
+
+    $pdf->Cell(35,12,$status,1);
+
+    $pdf->Ln();
 }
 
-$pdf->Output();
+$pdf->Ln(10);
+
+$pdf->SetFont('Arial','I',10);
+
+$pdf->SetTextColor(120,120,120);
+
+$pdf->Cell(190,10,
+'Generated from StudySync AI Dashboard',
+0,1,'C');
+
+$pdf->Output('D','StudySync_Report.pdf');
 
 ?>

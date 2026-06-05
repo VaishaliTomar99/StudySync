@@ -249,7 +249,8 @@ $aiSuggestion = getAISuggestion($pendingTasks, $completedTasks, $productivity);
     .action-buttons {
         display: flex;
         gap: 12px;
-        margin-bottom: 30px;
+        margin-top:25px;
+        margin-bottom: 25px;
         flex-wrap: wrap;
     }
 
@@ -269,7 +270,7 @@ $aiSuggestion = getAISuggestion($pendingTasks, $completedTasks, $productivity);
     }
 
     .btn-custom:hover {
-        background: #f3f4f6;
+        background: #000000;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
@@ -517,12 +518,13 @@ $aiSuggestion = getAISuggestion($pendingTasks, $completedTasks, $productivity);
     }
 
     .dark-mode .task-table tbody td {
-        color: #e0e0e0;
+        color: #000000;
         border-bottom-color: #3a3a4e;
+        font-weight: 500;
     }
 
     .dark-mode .task-table tbody tr:hover {
-        background: #2c2c3e;
+        background: #000000;
     }
 
     .dark-mode .form-select {
@@ -847,53 +849,99 @@ $aiSuggestion = getAISuggestion($pendingTasks, $completedTasks, $productivity);
                     <h4>🧠 AI Suggestion</h4>
                     <div class="ai-suggestion-box">
                         <p><?php echo $aiSuggestion; ?></p>
-                        <button class="btn btn-primary w-100" style="border-radius: 8px; padding: 10px 20px; font-weight: 600;">
+                        <button class="btn btn-primary w-100"
+                                style="border-radius: 8px; padding: 10px 20px; font-weight: 600;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#aiModal">
+
                             View Suggestions
+
                         </button>
                     </div>
                 </div>
 
                 <!-- Upcoming Deadlines -->
-                <div class="tasks-section">
+                 <div class="tasks-section">
+
                     <h4>📅 Upcoming Deadlines</h4>
 
                     <?php
 
+                    $today = date('Y-m-d');
+
                     $upcoming = mysqli_query($conn,
-                    "SELECT * FROM tasks WHERE user_id='$user_id' ORDER BY deadline ASC LIMIT 3");
+
+                    "SELECT * FROM tasks
+
+                    WHERE user_id='$user_id'
+
+                    AND deadline >= '$today'
+
+                    AND status != 'Completed'
+
+                    ORDER BY
+
+                    deadline ASC,
+
+                    FIELD(priority, 'High', 'Medium', 'Low')
+
+                    LIMIT 5");
 
                     $hasUpcoming = false;
+
                     while($task = mysqli_fetch_assoc($upcoming)){
+
                         $hasUpcoming = true;
+
+                        $priorityClass = 'badge-priority-' .
+                        strtolower($task['priority']);
+
                     ?>
 
                     <div class="upcoming-deadline">
+
                         <div>
+
                             <div class="deadline-date">
-                                <?php echo date('d M', strtotime($task['deadline'])); ?>
+
+                                <?php echo date('d M',
+                                strtotime($task['deadline'])); ?>
+
                             </div>
+
                             <div class="deadline-title">
+
                                 <?php echo $task['task_title']; ?>
+
                             </div>
+
                         </div>
-                        <span class="badge badge-priority-<?php echo strtolower($task['priority']); ?>">
+
+                        <span class="badge-priority <?php echo $priorityClass; ?>">
+
                             <?php echo ucfirst($task['priority']); ?>
+
                         </span>
+
                     </div>
 
                     <?php } ?>
 
-                    <?php if(!$hasUpcoming) { ?>
-                    <p style="color: #9ca3af; text-align: center; padding: 20px;">
-                        No upcoming deadlines
+                    <?php if(!$hasUpcoming){ ?>
+
+                    <p style="
+                        color:#9ca3af;
+                        text-align:center;
+                        padding:20px;
+                    ">
+
+                        No upcoming deadlines 🎉
+
                     </p>
+
                     <?php } ?>
 
                 </div>
-            </div>
-        </div>
-
-    </div>
 
     <!-- Toast Notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -956,6 +1004,105 @@ $aiSuggestion = getAISuggestion($pendingTasks, $completedTasks, $productivity);
             });
         }
     </script>
+<!-- AI Suggestion Modal -->
 
+<div class="modal fade"
+     id="aiModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content"
+             style="
+             border-radius:20px;
+             border:none;
+             overflow:hidden;
+             ">
+
+            <div class="modal-header"
+                 style="
+                 background:linear-gradient(135deg,#667eea,#764ba2);
+                 color:white;
+                 ">
+
+                <h4 class="modal-title fw-bold">
+                    🤖 AI Productivity Suggestions
+                </h4>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body p-4">
+
+                <?php
+
+                if($pendingTasks > $completedTasks){
+
+                    echo "
+
+                    <div class='alert alert-warning'>
+
+                        <h5>⚠️ Focus Needed</h5>
+
+                        <hr>
+
+                        ✅ You currently have more pending tasks.<br><br>
+
+                        ✅ Complete HIGH priority tasks first.<br>
+                        ✅ Use Pomodoro timer for focus sessions.<br>
+                        ✅ Avoid adding too many new tasks.<br>
+                        ✅ Try completing at least 2 tasks today.<br>
+
+                    </div>
+
+                    ";
+
+                }elseif($completedTasks >= $pendingTasks){
+
+                    echo "
+
+                    <div class='alert alert-success'>
+
+                        <h5>🎉 Excellent Productivity</h5>
+
+                        <hr>
+
+                        ✅ Great work completing tasks consistently.<br><br>
+
+                        ✅ Maintain your study streak.<br>
+                        ✅ Revise completed subjects weekly.<br>
+                        ✅ Increase deep focus sessions.<br>
+
+                    </div>
+
+                    ";
+
+                }else{
+
+                    echo "
+
+                    <div class='alert alert-info'>
+
+                        📚 Keep studying consistently.
+
+                    </div>
+
+                    ";
+                }
+
+                ?>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 </body>
 </html>

@@ -366,38 +366,48 @@ body{
 
 </div>
 
+
+
 <script>
 
-/* DEFAULT = 25 MIN */
+// =====================================
+// POMODORO TIMER
+// =====================================
 
-let defaultTime = 1500;
-
-let time = defaultTime;
+let time = 1500;
 
 let timer;
 
 let running = false;
 
-/* DISPLAY */
+
+// ASK NOTIFICATION PERMISSION
+
+if (Notification.permission !== "granted") {
+
+    Notification.requestPermission();
+
+}
+
+
+// UPDATE TIMER DISPLAY
 
 function updateDisplay(){
 
-    let minutes =
-    Math.floor(time / 60);
+    let minutes = Math.floor(time / 60);
 
-    let seconds =
-    time % 60;
+    let seconds = time % 60;
 
-    seconds =
-    seconds < 10
-    ? "0" + seconds
-    : seconds;
+    seconds = seconds < 10
+        ? "0" + seconds
+        : seconds;
 
     document.getElementById("timer").innerText =
-    minutes + ":" + seconds;
+        minutes + ":" + seconds;
 }
 
-/* START */
+
+// START TIMER
 
 function startTimer(){
 
@@ -421,23 +431,65 @@ function startTimer(){
 
             running = false;
 
-            alert("🍅 Pomodoro Session Completed!");
+            // =========================
+            // VOICE MESSAGE
+            // =========================
+
+            let message =
+            new SpeechSynthesisUtterance(
+                "Time's up! Your Pomodoro session is completed."
+            );
+
+            message.volume = 1;
+
+            message.rate = 1;
+
+            message.pitch = 1;
+
+            // FIX SPEECH
+
+            window.speechSynthesis.cancel();
+
+            setTimeout(() => {
+
+                window.speechSynthesis.speak(message);
+
+            }, 300);
+
+            // =========================
+            // DESKTOP NOTIFICATION
+            // =========================
+
+            if(Notification.permission === "granted"){
+
+                new Notification(
+                    "🍅 Pomodoro Completed!",
+                    {
+                        body: "Time to take a break!"
+                    }
+                );
+
+            }
 
         }
 
-    },1000);
+    }, 1000);
+
 }
 
-/* PAUSE */
+
+// PAUSE TIMER
 
 function pauseTimer(){
 
     clearInterval(timer);
 
     running = false;
+
 }
 
-/* RESET */
+
+// RESET TIMER
 
 function resetTimer(){
 
@@ -445,12 +497,40 @@ function resetTimer(){
 
     running = false;
 
-    time = defaultTime;
+    time = 1500;
 
     updateDisplay();
+
 }
 
-/* QUICK BUTTONS */
+
+// SET CUSTOM TIME
+
+function setCustomTime(){
+
+    let minutes =
+    document.getElementById("customMinutes").value;
+
+    if(minutes <= 0 || minutes == ""){
+
+        alert("Enter valid minutes");
+
+        return;
+
+    }
+
+    clearInterval(timer);
+
+    running = false;
+
+    time = minutes * 60;
+
+    updateDisplay();
+
+}
+
+
+// QUICK TIME BUTTONS
 
 function setQuickTime(minutes){
 
@@ -458,41 +538,11 @@ function setQuickTime(minutes){
 
     running = false;
 
-    defaultTime = minutes * 60;
-
-    time = defaultTime;
+    time = minutes * 60;
 
     updateDisplay();
+
 }
-
-/* CUSTOM TIME */
-
-function setCustomTime(){
-
-    let minutes =
-    document.getElementById("customMinutes").value;
-
-    if(minutes <= 0){
-
-        alert("Enter valid minutes");
-
-        return;
-    }
-
-    clearInterval(timer);
-
-    running = false;
-
-    defaultTime = minutes * 60;
-
-    time = defaultTime;
-
-    updateDisplay();
-}
-
-/* INITIAL */
-
-updateDisplay();
 
 </script>
 

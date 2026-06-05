@@ -97,6 +97,18 @@ if(isset($_POST['login'])){
                     </button>
 
                 </form>
+                <p class="text-center mt-3">
+
+                    Don't have an account?
+
+                    <a href="register.php"
+                        class="fw-bold text-primary text-decoration-none">
+
+                        Register
+
+                    </a>
+
+                </p>
 
             </div>
 

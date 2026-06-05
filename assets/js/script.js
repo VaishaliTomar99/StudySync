@@ -34,23 +34,91 @@ if (searchInput) {
 }
 
 });
+// ===================================
+// POMODORO VOICE + NOTIFICATION
+// ===================================
+
+// ASK NOTIFICATION PERMISSION
+
+if (Notification.permission !== "granted") {
+
+    Notification.requestPermission();
+
+}
+
+
+// SPEAK FUNCTION
+
+function speakPomodoroMessage() {
+
+    let message =
+    new SpeechSynthesisUtterance(
+        "Time's up! Your Pomodoro session is completed."
+    );
+
+    message.volume = 1;
+
+    message.rate = 1;
+
+    message.pitch = 1;
+
+    speechSynthesis.speak(message);
+
+}
+
+
+// SHOW NOTIFICATION
+
+function showPomodoroNotification() {
+
+    // VOICE
+
+    speakPomodoroMessage();
+
+    // DESKTOP NOTIFICATION
+
+    if (Notification.permission === "granted") {
+
+        new Notification("🍅 Pomodoro Completed!", {
+
+            body: "Time to take a break!"
+
+        });
+
+    }
+
+}
 
 // ===================================
 // AUTO SCROLL CHAT
 // ===================================
 
-window.onload = () => {
+function scrollChatToBottom() {
 
-const chatBox =
-document.getElementById("chatBox");
+    const chatBox =
+    document.getElementById("chatBox");
 
-if(chatBox){
+    if(chatBox){
 
-    chatBox.scrollTop =
-    chatBox.scrollHeight;
+        chatBox.scrollTo({
+
+            top: chatBox.scrollHeight,
+
+            behavior: "smooth"
+
+        });
+
+    }
 
 }
-};
+
+// PAGE LOAD AUTO SCROLL
+
+window.addEventListener("load", () => {
+
+    scrollChatToBottom();
+
+});
 
 // ===================================
 // DARK MODE
@@ -113,8 +181,7 @@ input.value = "";
 
 // AUTO SCROLL
 
-chatBox.scrollTop =
-chatBox.scrollHeight;
+scrollChatToBottom();
 
 
 // ==========================
@@ -135,8 +202,7 @@ chatBox.innerHTML += `
 
 `;
 
-chatBox.scrollTop =
-chatBox.scrollHeight;
+scrollChatToBottom();
 
 
 // ==========================
@@ -208,8 +274,7 @@ try {
 
     // AUTO SCROLL
 
-    chatBox.scrollTop =
-    chatBox.scrollHeight;
+    scrollChatToBottom();
 
 }
 
@@ -238,8 +303,7 @@ catch (error) {
 
     `;
 
-    chatBox.scrollTop =
-    chatBox.scrollHeight;
+    scrollChatToBottom();
 
 }
 

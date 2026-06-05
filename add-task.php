@@ -111,6 +111,16 @@ body{
     bottom:30px;
     width:80%;
 }
+.sidebar-logout a{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 18px;
+}
 
 /* MAIN */
 
@@ -213,8 +223,9 @@ body{
     <div class="sidebar-logout">
 
         <a href="logout.php">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
+            <class="logout-btn">
+
+            ↩ Logout
         </a>
 
     </div>

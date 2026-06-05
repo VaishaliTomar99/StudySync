@@ -420,7 +420,10 @@ async function sendMessage(){
             </div>
         </div>`;
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollTo({
+            top: chatBox.scrollHeight,
+            behavior: "smooth"
+        });
 
     } catch(error) {
 
@@ -508,6 +511,21 @@ async function deleteChats(){
     }
 
 }
+// ===================================
+// AUTO SCROLL ON PAGE LOAD
+// ===================================
+
+window.onload = function(){
+
+    const chatBox =
+    document.getElementById("chatBox");
+
+    chatBox.scrollTo({
+        top: chatBox.scrollHeight,
+        behavior: "smooth"
+    });
+
+};
 </script>
 
 </body>
