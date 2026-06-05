@@ -63,11 +63,11 @@ $message = trim($_POST['message']);
 
 // USER ID
 
-<<<<<<< HEAD
+
 $user_id = 1;
-=======
+
 $user_id = $_SESSION['user_id'];
->>>>>>> 0f2e8d8 (Final Railway deployment setup)
+
 
 // IF LOGIN SYSTEM EXISTS USE:
 // $user_id = $_SESSION['user_id'];
