@@ -1,5 +1,8 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "buildCommand": "composer install --no-dev --optimize-autoloader"
+  },
   "deploy": {
     "startCommand": "php -S 0.0.0.0:$PORT -t . router.php"
   }
