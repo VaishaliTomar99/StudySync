@@ -4,6 +4,8 @@
     "buildCommand": "composer install --no-dev --optimize-autoloader"
   },
   "deploy": {
-    "startCommand": "php -S 0.0.0.0:$PORT -t . router.php"
+    "startCommand": "php -S 0.0.0.0:${PORT:-8080} -t . router.php",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 30
   }
 }
