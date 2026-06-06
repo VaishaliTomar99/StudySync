@@ -24,10 +24,7 @@ if ($conn->connect_error) {
 
 require 'vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-$apiKey = $_ENV['GROQ_API_KEY'];;
+$apiKey = getenv('GROQ_API_KEY') ?: $_ENV['GROQ_API_KEY'] ?? '';
 
 
 // CHECK REQUEST METHOD
