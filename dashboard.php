@@ -615,9 +615,7 @@ $aiSuggestion = getAISuggestion($pendingTasks, $completedTasks, $productivity);
             <a href="pomodoro.php">
                 <i class="fas fa-clock"></i> Pomodoro Timer
             </a>
-            <a href="upload-notes.php">
-                <i class="fas fa-sticky-note"></i> Notes
-            </a>
+        
             <a href="profile.php">
                 <i class="fas fa-user"></i>
                 Profile
