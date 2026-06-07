@@ -1,12 +1,5 @@
 <?php
-
 require 'vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
 use Resend;
-
-$resend = Resend::client($_ENV['RESEND_API_KEY']);
-
+$resend = Resend::client(getenv('RESEND_API_KEY') ?: $_ENV['RESEND_API_KEY'] ?? '');
 ?>
