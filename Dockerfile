@@ -25,4 +25,8 @@ RUN echo '<Directory /var/www/html>\n\
 </Directory>' > /etc/apache2/conf-available/app.conf && \
     a2enconf app
 
+RUN mkdir -p /var/www/html/uploads/avatars && \
+    chmod -R 777 /var/www/html/uploads && \
+    chown -R www-data:www-data /var/www/html/uploads
+
 EXPOSE 80
