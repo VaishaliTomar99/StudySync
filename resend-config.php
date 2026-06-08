@@ -1,6 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 require 'vendor/autoload.php';
 
 function sendEmail($to, $subject, $message) {
@@ -11,8 +12,8 @@ function sendEmail($to, $subject, $message) {
         $mail->SMTPAuth   = true;
         $mail->Username   = getenv('BREVO_SMTP_USER');
         $mail->Password   = getenv('BREVO_SMTP_PASS');
-        $mail->SMTPSecure = 'tls';
-        $mail->Port       = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // SSL
+        $mail->Port       = 465;                           // changed from 587
         $mail->setFrom(getenv('BREVO_SMTP_FROM'), 'StudySync AI');
         $mail->addAddress($to);
         $mail->Subject = $subject;
