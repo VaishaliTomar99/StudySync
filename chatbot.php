@@ -1,5 +1,7 @@
 
 <?php
+ob_start();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -386,6 +388,7 @@ body {
 <script>
 
 // SEND MESSAGE
+
 document.getElementById("sendBtn")
 .addEventListener("click", sendMessage);
 
@@ -408,7 +411,8 @@ async function sendMessage() {
 
     if (message === "") return;
 
-    // Display user message safely
+    // Display user message
+
     const userMessage = document.createElement("div");
     userMessage.className = "message user-message";
 
@@ -422,6 +426,7 @@ async function sendMessage() {
     input.value = "";
 
     // Typing animation
+
     const typing = document.createElement("div");
     typing.className = "typing";
     typing.id = "typing";
@@ -452,25 +457,22 @@ async function sendMessage() {
 
         });
 
-        // Read response safely
         const responseText = await response.text();
 
         let data;
 
         try {
             data = JSON.parse(responseText);
-        } catch (parseError) {
-            throw new Error("Invalid server response. Check Render Logs.");
+        } catch (error) {
+            throw new Error("Invalid server response. Please check Render Logs.");
         }
 
-        // Remove typing animation
         const typingElement = document.getElementById("typing");
 
         if (typingElement) {
             typingElement.remove();
         }
 
-        // Display reply or detailed API error
         let botReply = data.reply || "No response from AI";
 
         if (data.details) {
@@ -540,6 +542,7 @@ async function sendMessage() {
 
 
 // DELETE CHAT HISTORY
+
 async function deleteChats() {
 
     if (!confirm("Delete all chats?")) return;
@@ -586,9 +589,7 @@ async function deleteChats() {
 
             `;
 
-        }
-
-        else {
+        } else {
 
             alert("Failed to delete chats");
 
@@ -607,6 +608,7 @@ async function deleteChats() {
 
 
 // AUTO SCROLL
+
 window.addEventListener("load", function() {
 
     const chatBox = document.getElementById("chatBox");
